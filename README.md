@@ -5,6 +5,6 @@
 
 ## 安装
 ```bash
-git clone https://github.com/yourname/NoWin
+git clone https://github.com/Done57/NoWin
 cd NoWin
 sudo ./install.sh
