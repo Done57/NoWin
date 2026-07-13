@@ -8,3 +8,9 @@
 git clone https://github.com/Done57/NoWin
 cd NoWin
 sudo ./install.sh
+
+## 平台说明
+
+**当前仅支持 Android（Termux）**
+
+由于 Linux x64 版本源码丢失，我们将不再推出 Linux 版本。
