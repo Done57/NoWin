@@ -12,6 +12,7 @@ fi
 SPEED=${SPEED:-0.01}
 LINES=${LINES:-100}
 COLOR=${COLOR:-32}
+R18=${R18:-false}
 
 show_image() {
     if ! command -v curl &> /dev/null; then
@@ -23,10 +24,25 @@ show_image() {
         return 1
     fi
 
+    if [ "$R18" = "true" ]; then
+        echo "[警告] 当前允许 18+ 内容"
+        echo "[提示] 如需关闭，请在配置中设置 R18=false"
+        echo "[提示] 5 秒后继续..."
+        sleep 5
+    else
+        echo "[信息] 当前仅显示全年龄内容"
+        echo "[提示] 如需开启 18+，请在配置中设置 R18=true"
+        sleep 1
+    fi
+
     echo "[信息] 正在拉取随机图片..."
     local tmp_img="$HOME/nowin_$(date +%s)_$RANDOM.jpg"
     
-    local img_url=$(curl -s "https://api.lolicon.app/setu/v2?r18=0&num=1" | grep -o '"original":"[^"]*"' | cut -d'"' -f4)
+    if [ "$R18" = "true" ]; then
+        local img_url=$(curl -s "https://api.lolicon.app/setu/v2?r18=1&num=1" | grep -o '"original":"[^"]*"' | cut -d'"' -f4)
+    else
+        local img_url=$(curl -s "https://api.lolicon.app/setu/v2?r18=0&num=1" | grep -o '"original":"[^"]*"' | cut -d'"' -f4)
+    fi
     
     if [ -z "$img_url" ]; then
         echo "[错误] 无法获取图片链接"
@@ -45,12 +61,18 @@ show_image() {
 }
 
 show_help() {
-    echo "NoWin - Linux 防呆整蛊插件"
+    echo "NoWin - Linux 防呆警示工具"
     echo ""
     echo "用法："
     echo "  nowin             刷屏"
-    echo "  nowin -i          单独拉取一张随机图片"
+    echo "  nowin -i          拉取随机图片"
     echo "  nowin -h          显示帮助"
+    echo ""
+    echo "配置："
+    echo "  SPEED=${SPEED}    刷屏速度（秒）"
+    echo "  LINES=${LINES}    刷屏行数"
+    echo "  COLOR=${COLOR}    颜色（32=绿，33=黄，31=红，36=青）"
+    echo "  R18=${R18}        是否允许 18+ 内容（true/false）"
 }
 
 case "$1" in
