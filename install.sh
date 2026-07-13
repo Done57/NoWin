@@ -27,3 +27,4 @@ echo -e "${GREEN}安装完成${NC}"
 echo "命令："
 echo "  exe    刷屏"
 echo "  nowin -i   拉取随机图片"
+#一个神秘小彩蛋
